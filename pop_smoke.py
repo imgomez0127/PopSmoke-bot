@@ -50,6 +50,7 @@ class PopSmoke(discord.Client):
                             print("Warning: Error Received when playing audio clip.")
                             traceback.print_exc()
                             await voice_channel.disconnect()
+                            return
                     while voice_channel.is_playing():
                         continue
                     await voice_channel.disconnect()
