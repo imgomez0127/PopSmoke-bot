@@ -1,8 +1,9 @@
 import logging
 import os
 from urllib.parse import urljoin
-import discord
 from random import randrange
+import traceback
+import discord
 
 class PopSmoke(discord.Client):
     def __init__(self,debug=True):
@@ -17,7 +18,7 @@ class PopSmoke(discord.Client):
             logger.addHandler(handler)
         self.special_users = {}
         self.should_play = True
-        self.music_files = ["clip1.mp3","clip2.mp3","clip3.mp3"]
+        self.music_files = ["clip1.mp3", "clip2.mp3", "clip3.mp3"]
 
     async def on_ready(self):
         print("logged in as {0}!".format(self.user))
@@ -45,8 +46,10 @@ class PopSmoke(discord.Client):
                         try:
                             audio = discord.FFmpegOpusAudio(sound_clip)
                             voice_channel.play(audio)
-                        except:
-                            voice_channel.disconnect()
+                        except Exception:
+                            print("Warning: Error Received when playing audio clip.")
+                            traceback.print_exc()
+                            await voice_channel.disconnect()
                     while voice_channel.is_playing():
                         continue
                     await voice_channel.disconnect()
